@@ -1,13 +1,15 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
-let input = fs.readFileSync(filePath).toString().trim().split('\n');
+const fs = require("fs");
+const file = process.platform === "linux" ? "dev/stdin" : "./text.txt";
+const input = fs.readFileSync(file).toString().trim().split("\n");
 
-const caseNum = +input[0];
-const findNum = +input[2];
-let answer = 0;
-input = input[1].split(' ').map((item) => +item);
+const t = input[0];
+const arr = input[1].split(" ");
+const v = input[2];
 
-for (let i = 0; i < caseNum; i++) {
-    if (input[i] === findNum) answer++;
+let result = 0;
+for (i = 0; i < t; i++) {
+  if (arr[i] === v) {
+    result++;
+  }
 }
-console.log(answer);
+console.log(result);
