@@ -1,33 +1,28 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
-const input = fs
-  .readFileSync(filePath)
-  .toString()
-  .trim()
-  .split('\n')
-  .map(Number); // 각 요소를 숫자로 변환
+// 1번 문제: Seven_Dwarfs.js
 
-const findNotDwarf = (arr, target) => {
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = i + 1; j < arr.length; j++) {
-      if (arr[i] + arr[j] === target) {
-        arr.splice(j, 1);
-        arr.splice(i, 1);
-        return arr; //
-      }
-    }
+const fs = require("fs");
+const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
+const nums = input.map(Number).sort((a, b) => a - b);
+const minus =
+  nums.reduce((acc, cur) => {
+    return acc + cur;
+  }, 0) - 100;
+
+let start = 0;
+let end = nums.length - 1;
+let minusNums = [];
+
+while (start < end) {
+  if (nums[start] + nums[end] === minus) {
+    minusNums = [nums[start], nums[end]];
+    break;
+  } else if (nums[start] + nums[end] < minus) {
+    start += 1;
+  } else {
+    end -= 1;
   }
-  return arr;
-};
-
-function solution() {
-  const total = input.reduce((acc, cur) => acc + cur, 0);
-  const notDwarf = total - 100;
-
-  const result = findNotDwarf(input, notDwarf);
-  const sortedResult = result.sort((a, b) => a - b);
-
-  sortedResult.forEach((num) => console.log(num));
 }
 
-solution();
+const result = nums.filter((num) => !minusNums.includes(num));
+
+console.log(result.join("\n"));
