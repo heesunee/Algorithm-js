@@ -1,22 +1,24 @@
-const readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
+// 7번 문제: Multiplication.js
 
-readline.on('line', function(line) {
-    const [A, B, C] = line.split(' ').map(BigInt); 
-    console.log(getRest(A, B, C).toString());       
-    readline.close();
-});
+const fs = require("fs");
+let [A, B, C] = fs
+  .readFileSync("/dev/stdin")
+  .toString()
+  .trim()
+  .split(" ")
+  .map(BigInt);
 
-function getRest(a, b, c) {
-    if (b === BigInt(1)) return a % c;  
-
-    const half = getRest(a, b / BigInt(2), c);
-
-    if (b % BigInt(2) === BigInt(0)) {
-        return (half * half) % c;
+function pow(x, y) {
+  if (y == 0) {
+    return BigInt(1);
+  } else {
+    const temp = pow(x, BigInt(parseInt(y / BigInt(2))));
+    if (y % BigInt(2) == 0) {
+      return (temp * temp) % C;
     } else {
-        return (half * half * a) % c;
+      return (temp * temp * x) % C;
     }
+  }
 }
+
+console.log(parseInt(pow(A, B)));
