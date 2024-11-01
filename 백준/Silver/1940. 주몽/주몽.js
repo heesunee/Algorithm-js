@@ -1,20 +1,37 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
-const [N, M, input] = fs.readFileSync(filePath).toString().trim().split('\n');
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
 
-const material = input.split(' ').map(Number);
-let total = 0;
+const input = [];
 
-function solution() {
-  for (let i = 0; i < N; i++) {
-    for (let j = i + 1; j < N; j++) {
-      if (material[i] + material[j] === Number(M)) {
-        total += 1;
-      }
+readline.on('line', function(line) {
+    input.push(line);  // 한 줄 입력을 받아 배열에 저장
+}).on('close', function() {
+    const N = parseInt(input[0]);
+    const M = parseInt(input[1]);
+    const materials = input[2].split(' ').map(Number);
+
+    materials.sort((a, b) => a - b);
+
+    let left = 0;
+    let right = N - 1;
+    let count = 0;
+
+    while (left < right) {
+        const sum = materials[left] + materials[right];
+        
+        if (sum === M) {
+            count++;          
+            left++;        
+            right--;
+        } else if (sum < M) {
+            left++;           
+        } else {
+            right--;        
+        }
     }
-  }
 
-  console.log(total);
-}
-
-solution();
+    console.log(count);
+    process.exit();
+});
