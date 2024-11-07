@@ -1,38 +1,29 @@
-const readline = require("readline").createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+// 6번 문제: 사과 담기 게임(appleGame.js)
+const fs = require("fs");
+const input = fs.readFileSync("./dev/stdin").toString().trim().split("\n");
 
-let input = [];
-readline
-  .on("line", (line) => {
-    input.push(line.trim());
-  })
-  .on("close", () => {
-    const [N, M] = input[0].split(" ").map(Number); // 스크린 크기 N, 바구니 크기 M
-    const J = parseInt(input[1]); // 사과 개수
-    const apples = input.slice(2).map(Number); // 사과 떨어지는 위치 배열
+const [N, M] = input.shift().split(" ").map(Number);
+input.shift();
+const apples = input.map(Number);
 
-    let left = 1; // 바구니 초기 위치(왼쪽 기준)
-    let result = 0; // 총 이동 거리
+let left = 1;
+let right = M;
+let move = 0;
 
-    // 사과 담기
-    for (let i = 0; i < J; i++) {
-      // 왼쪽으로 이동
-      if (apples[i] < left) {
-        const distance = left - apples[i];
-        result += distance;
-        left -= distance;
-      }
-      // 오른쪽으로 이동
-      else if (apples[i] > left + M - 1) {
-        const distance = apples[i] - (left + M - 1);
-        result += distance;
-        left += distance;
-      }
-    }
-
-    console.log(result);
-
-    process.exit();
-  });
+for (let i = 0; i < apples.length; i++) {
+  const apple = apples[i];
+  if (apple >= left && apple <= right) continue;
+  else if (apple < left) {
+    const dist = left - apple;
+    left = apple;
+    right = right - dist;
+    move += dist;
+  } else {
+    apple > right;
+    const dist = apple - right;
+    right = apple;
+    left = left + dist;
+    move += dist;
+  }
+}
+console.log(move);
