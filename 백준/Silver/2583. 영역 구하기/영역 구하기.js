@@ -1,53 +1,52 @@
-const input = require('fs')
-  .readFileSync('/dev/stdin')
-  .toString()
-  .trim()
-  .split('\n');
-const [M, N, K] = input[0].split(' ').map(Number);
-const paper = [...Array(M)].map(() => Array(N).fill(false));
 
-for (let i = 1; i <= K; i++) {
-  const [x1, y1, x2, y2] = input[i].split(' ').map(Number);
-  for (let y = M - y2; y < M - y1; y++) {
-    for (let x = x1; x < x2; x++) {
-      paper[y][x] = true;
+
+const fs = require("fs");
+const input = fs.readFileSync("/dev/stdin").toString().trim().split('\n');
+
+
+
+const [m, n, k] = input[0].split(" ").map(Number);
+const arr = Array.from({ length: n }, () => Array(m).fill(0));
+
+// 좌표 생성
+for (let i = 1; i <= k; i++) {
+    const [x1, y1, x2, y2] = input[i].split(" ").map(Number);
+    for (let x = x1; x < x2; x++) {     // 왼쪽 위 꼭짓점부터
+        for (let y = y1; y < y2; y++) { // 오른쪽 아래 꼭짓점까지
+            arr[x][y] = 1;
+        }
     }
-  }
 }
 
-const offset = [
-  [0, 1],
-  [1, 0],
-  [-1, 0],
-  [0, -1],
-];
-const dfs = (start) => {
-  const stack = [start];
-  let count = 0;
-  while (stack.length) {
-    const [x, y] = stack.pop();
-    count++;
+const dx = [-1, 1, 0, 0];
+const dy = [0, 0, -1, 1];
+
+// DFS 함수
+function dfs(x, y) {
+    arr[x][y] = 1; // 방문 표시
+    let cnt = 1;
+
     for (let i = 0; i < 4; i++) {
-      const nx = x + offset[i][0];
-      const ny = y + offset[i][1];
-      if (nx >= 0 && nx < M && ny >= 0 && ny < N && !paper[nx][ny]) {
-        paper[nx][ny] = true;
-        stack.push([nx, ny]);
-      }
-    }
-  }
-  return count;
-};
+        const nx = x + dx[i];
+        const ny = y + dy[i];
 
-const areas = [];
-for (let i = 0; i < M; i++) {
-  for (let j = 0; j < N; j++) {
-    if (!paper[i][j]) {
-      paper[i][j] = true;
-      areas.push(dfs([i, j, 0]));
+        if (nx >= 0 && nx < n && ny >= 0 && ny < m && arr[nx][ny] === 0) {
+            cnt += dfs(nx, ny); // 재귀 호출한 결과를 cnt에 더함
+        }
     }
-  }
+    return cnt;
 }
 
-console.log(areas.length);
-console.log(areas.sort((a, b) => a - b).join(' '));
+const answer = [];
+
+for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+        if (arr[i][j] === 0) {
+            answer.push(dfs(i, j));
+        }
+    }
+}
+
+answer.sort((a, b) => a - b);
+console.log(answer.length);
+console.log(answer.join(" "));
