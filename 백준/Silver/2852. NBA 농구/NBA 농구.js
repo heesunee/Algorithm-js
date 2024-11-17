@@ -1,28 +1,31 @@
-const fs = require('fs');
-const [N, ...input] = fs
-  .readFileSync('./dev/stdin')
+// 2번 문제: NBA 농구(NBA.js)
+const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
+let [N, ...input] = require("fs")
+  .readFileSync(filePath)
   .toString()
   .trim()
-  .split('\n');
-let one = 0;
-let two = 0;
+  .split("\n");
+
+let firstTeam = 0;
+let secondTeam = 0;
 const score = [];
 let answer = [0, 0];
+
 input.forEach((v) => {
-  const [team, t] = v.split(' ');
-  const [mm, ss] = t.split(':');
+  const [team, time] = v.split(" ");
+  const [mm, ss] = time.split(":");
   if (team == 1) {
-    one++;
+    firstTeam++;
   } else {
-    two++;
+    secondTeam++;
   }
-  const time = Number(mm) * 60 + Number(ss);
-  if (one > two) {
-    score.push([1, time]);
-  } else if (two > one) {
-    score.push([2, time]);
+  const winningTime = Number(mm) * 60 + Number(ss);
+  if (firstTeam > secondTeam) {
+    score.push([1, winningTime]);
+  } else if (secondTeam > firstTeam) {
+    score.push([2, winningTime]);
   } else {
-    score.push([0, time]);
+    score.push([0, winningTime]);
   }
 });
 
@@ -35,10 +38,10 @@ for (let i = 1; i < score.length; i++) {
 
 answer = answer
   .map((v) => {
-    const mm = String(Math.floor(v / 60)).padStart(2, '0');
-    const ss = String(v % 60).padStart(2, '0');
+    const mm = String(Math.floor(v / 60)).padStart(2, "0");
+    const ss = String(v % 60).padStart(2, "0");
     return `${mm}:${ss}`;
   })
-  .join('\n');
+  .join("\n");
 
 console.log(answer);
