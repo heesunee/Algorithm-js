@@ -1,11 +1,17 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
-let input = fs.readFileSync(filePath).toString().trim().split('\n');
+const input = +require('fs')
+  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+  .toString()
+  .trim();
 
-input = Number(input);
-let sum = 0;
+let num = Number(input);
 
-for (let i = 1; i <= input; i++) {
-    sum = sum + i;
+function solution(num) {
+  let sum = 0;
+  for (let i = 1; i <= num; i++) {
+    sum += i;
+  }
+
+  return sum;
 }
-console.log(sum);
+
+console.log(solution(num));
