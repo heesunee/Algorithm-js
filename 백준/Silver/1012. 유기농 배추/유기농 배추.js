@@ -3,7 +3,7 @@ const input = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
 
 const T = parseInt(input[0]);
 
-// DFS 함수
+// DFS 
 function dfs(x, y, array, M, N) {
     if (x < 0 || y < 0 || x >= M || y >= N) return false; // 좌표 유효성 검사
     if (array[x][y] === 1) { // 배추가 심어져 있으면
