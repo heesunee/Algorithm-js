@@ -1,5 +1,12 @@
 function solution(n) {
-    const gcd = (a,b) => b===0 ? a : gcd(b,a%b);
-    const divisor = (n>=6) ? gcd(n,6) : gcd(6,n);
-    return  ((n*6) / divisor)/6;
+    let slice = 6;
+    
+    while(true){
+        if(slice%n === 0){
+            break;
+        }
+        
+        slice+=6;
+    }
+    return slice/6;
 }
