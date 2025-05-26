@@ -1,28 +1,28 @@
-// 1번 문제: Seven_Dwarfs.js
+const input = require('fs')
+  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+  .toString()
+  .trim()
+  .split('\n')
+  .map(Number)
+  .sort((a, b) => a - b);
 
-const fs = require("fs");
-const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
-const nums = input.map(Number).sort((a, b) => a - b);
-const minus =
-  nums.reduce((acc, cur) => {
-    return acc + cur;
-  }, 0) - 100;
+const total = input.reduce((sum, val) => sum + val, 0);
+const target = total - 100;
 
-let start = 0;
-let end = nums.length - 1;
-let minusNums = [];
+let a = -1,
+  b = -1;
 
-while (start < end) {
-  if (nums[start] + nums[end] === minus) {
-    minusNums = [nums[start], nums[end]];
-    break;
-  } else if (nums[start] + nums[end] < minus) {
-    start += 1;
-  } else {
-    end -= 1;
+for (let i = 0; i < input.length; i++) {
+  for (let j = i + 1; j < input.length; j++) {
+    if (input[i] + input[j] === target) {
+      a = i;
+      b = j;
+      break;
+    }
   }
+  if (a !== -1) break;
 }
 
-const result = nums.filter((num) => !minusNums.includes(num));
+const result = input.filter((_, idx) => idx !== a && idx !== b);
 
-console.log(result.join("\n"));
+console.log(result.join('\n'));
