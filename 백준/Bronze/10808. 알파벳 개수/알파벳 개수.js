@@ -1,21 +1,50 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
-const input = fs.readFileSync(filePath).toString().trim().split('');
-const unicodeInput = input.map((char) => char.charCodeAt(0)); //문자를 유니코드로 변환시켜 저장한 배열
+const input = require('fs')
+  .readFileSync(process.platform == 'linux' ? '/dev/stdin' : './input.txt')
+  .toString()
+  .trim()
+  .toLowerCase()
+  .split('');
 
-let alphabetCount = Array(26).fill(0); //개수를 저장할 배열, 초기값은 0
-const alphabet = Array.from({ length: 26 }, (_, i) => 97 + i); //알파벳의 유니코드 값이 저장된 배열
+const alpha = {
+  a: 0,
+  b: 0,
+  c: 0,
+  d: 0,
+  e: 0,
+  f: 0,
+  g: 0,
+  h: 0,
+  i: 0,
+  j: 0,
+  k: 0,
+  l: 0,
+  m: 0,
+  n: 0,
+  o: 0,
+  p: 0,
+  q: 0,
+  r: 0,
+  s: 0,
+  t: 0,
+  u: 0,
+  v: 0,
+  w: 0,
+  x: 0,
+  y: 0,
+  z: 0,
+};
 
-function solution() {
-  unicodeInput.forEach((unicode) => {
-    const index = alphabet.indexOf(unicode);
-
-    if (index !== -1) {
-      alphabetCount[index] += 1;
-    }
-  });
-
-  console.log(...alphabetCount);
+for (const ch of input) {
+  alpha[ch] += 1;
 }
 
-solution();
+const result = [];
+
+for (const num in alpha) {
+  result.push(alpha[num]);
+}
+
+result.toString().trim();
+
+console.log(result.join(' '));
+
