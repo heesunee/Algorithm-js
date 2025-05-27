@@ -1,20 +1,16 @@
-const fs = require("fs");
-const input = fs.readFileSync("/dev/stdin").toString().trim();
+const input = require('fs')
+  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+  .toString()
+  .trim()
+  .split('');
 
-const arr = [...input];
+const middle = Math.ceil(input.length / 2);
 
-let i = 0;
-let num = 0;
-
-while (i < Math.floor(arr.length / 2)) {
-  if (arr[i] === arr[arr.length - 1 - i]) {
-    num += 1;
+let flag = 1;
+for (let i = 0; i < middle; i++) {
+  if (input[i] !== input[input.length - 1 - i]) {
+    flag = 0;
   }
-  i += 1;
 }
 
-if (num === Math.floor(arr.length / 2)) {
-  console.log(1);
-} else {
-  console.log(0);
-}
+console.log(flag);
