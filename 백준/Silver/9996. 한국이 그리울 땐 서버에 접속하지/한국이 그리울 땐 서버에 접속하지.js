@@ -1,25 +1,22 @@
-// 5번 문제: Korea.js
-
-const solution = (N, pattern, array) => {
-  const fileName = pattern.split("*");
-
-  return array
-    .map((el) => {
-      if (
-        el.startsWith(fileName[0]) &&
-        el.slice(fileName[0].length).endsWith(fileName[1])
-      ) {
-        return "DA";
-      }
-      return "NE";
-    })
-    .join("\n");
-};
-
-const [N, pattern, ...array] = require("fs")
-  .readFileSync("/dev/stdin")
+const input = require('fs')
+  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
   .toString()
   .trim()
-  .split("\n");
+  .split('\n');
 
-console.log(solution(Number(N), pattern, array));
+const N = +input[0];
+const [prefix, suffix] = input[1].split('*');
+const files = input.slice(2);
+const result = files.map((file) => {
+  if (
+    file.length >= prefix.length + suffix.length && // 길이 체크
+    file.startsWith(prefix) &&
+    file.endsWith(suffix)
+  ) {
+    return 'DA';
+  } else {
+    return 'NE';
+  }
+});
+
+console.log(result.join('\n'));
